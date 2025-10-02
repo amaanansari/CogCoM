@@ -346,3 +346,12 @@ weights must comply with the [Model License](./MODEL_LICENSE).
   year={2024}
 }
 ```
+
+## FAQ (by Amaan)
+
+If you run into an error on macos installing xtransformers use: 
+
+```
+brew install llvm libomp ninja
+CC=$(brew --prefix llvm)/bin/clang CXX=$(brew --prefix llvm)/bin/clang++ UV_CC=$CC UV_CXX=$CXX uv pip install -r requirements.txt
+```

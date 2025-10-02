@@ -153,3 +153,6 @@ weights
 save/
 checkpoints/
 runs/
+
+# Python
+.venv312

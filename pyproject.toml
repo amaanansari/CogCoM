@@ -1,0 +1,22 @@
+[project]
+name = "cogcom"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "deepspeed==0.10.0",
+    "einops==0.6.1",
+    "gradio==3.50.2",
+    "paddleocr==2.6.0.1",
+    "pillow>=10.0.1",
+    "pydantic==1.10.12",
+    "seaborn>=0.13.0",
+    "spacy==3.6.0",
+    "swissarmytransformer>=0.4.8",
+    "timm>=0.9.12",
+    "torch>=2.1.2",
+    "torchvision>=0.16.0",
+    "transformers>=4.37.0",
+    "xformers>=0.0.24",
+]
