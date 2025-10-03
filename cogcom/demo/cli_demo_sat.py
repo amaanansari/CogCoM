@@ -3,6 +3,7 @@ import os, sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 import torch
+import numpy as np
 import argparse
 from sat.quantization.kernels import quantize
 
@@ -12,6 +13,10 @@ from utils import chat
 from utils import get_image_processor, llama2_tokenizer, llama2_text_processor_inference
 
 def main():
+    if hasattr(torch.serialization, "add_safe_globals"):
+        # Required for loading checkpoints saved with numpy reconstruction helpers on PyTorch >= 2.6
+        torch.serialization.add_safe_globals([np.core.multiarray._reconstruct])
+
     parser = argparse.ArgumentParser()
     parser.add_argument("--max_length", type=int, default=2048, help='max length of the total sequence')
     parser.add_argument("--top_p", type=float, default=0.4, help='top p for nucleus sampling')
