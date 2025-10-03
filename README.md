@@ -355,3 +355,24 @@ If you run into an error on macos installing xtransformers use:
 brew install llvm libomp ninja
 CC=$(brew --prefix llvm)/bin/clang CXX=$(brew --prefix llvm)/bin/clang++ UV_CC=$CC UV_CXX=$CXX uv pip install -r requirements.txt
 ```
+
+### How to setup the required env
+
+```
+uv sync
+uv run -- spacy download en_core_web_sm
+
+
+mkdir ./models
+mkdir ./models/tokenizer
+hf download lmsys/vicuna-7b-v1.5 tokenizer.model --local-dir ./models/tokenizer
+export SAT_HOME=/work/aansari/sat_models
+uv run python cli_demo_sat.py --from_pretrained cogcom-base-17b --local_tokenizer /work/aansari/code/CogCoM/models/tokenizer --fp16 --quant 4 --english
+```
+
+
+### How to grab a GPU?
+Grab GPU with
+```
+salloc --partition gpu-vram-32gb --cpus-per-task=20 --mem=70G --gres=gpu:1 --time=2:00:00
+```

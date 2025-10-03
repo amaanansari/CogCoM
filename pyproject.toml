@@ -23,5 +23,6 @@ dependencies = [
     "xformers>=0.0.24",
     "spacy>=3.6.0",
     "pip>=25.2",
-    "click<=8.1"
+    "click<=8.1",
+    "num2words>=0.5.14",
 ]
