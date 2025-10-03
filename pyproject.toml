@@ -13,7 +13,7 @@ dependencies = [
     "pillow>=10.0.1",
     "pydantic==1.10.12",
     "seaborn>=0.13.0",
-    "spacy==3.6.0",
+    "spacy>=3.8.7",
     "swissarmytransformer>=0.4.8",
     "timm>=0.9.12",
     "torch>=2.1.2",
@@ -23,4 +23,5 @@ dependencies = [
     "xformers>=0.0.24",
     "spacy>=3.6.0",
     "pip>=25.2",
+    "click<=8.1"
 ]
