@@ -155,5 +155,5 @@ checkpoints/
 runs/
 
 # Python
-.venv312
-models
+models/
+data/

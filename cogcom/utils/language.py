@@ -37,7 +37,7 @@ _history_to_prompt = {
 def llama2_tokenizer(tokenizer_path, signal_type="base"):
     tokenizer = LlamaTokenizer.from_pretrained(tokenizer_path)
     if tokenizer.pad_token_id is None:
-        tokenizer.pad_token_id = 32000
+        tokenizer.pad_token = tokenizer.eos_token
     tokenizer.boi = "[IMG]"
     tokenizer.eoi = "[/IMG]"
     assert signal_type in ["base", "chat"]

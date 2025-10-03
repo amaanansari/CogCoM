@@ -1,0 +1,371 @@
+cogcom v0.1.0
+├── bitsandbytes v0.48.1
+│   ├── numpy v1.26.4
+│   ├── packaging v25.0
+│   └── torch v2.8.0
+│       ├── filelock v3.19.1
+│       ├── fsspec v2025.9.0
+│       │   └── aiohttp v3.12.15 (extra: http)
+│       │       ├── aiohappyeyeballs v2.6.1
+│       │       ├── aiosignal v1.4.0
+│       │       │   ├── frozenlist v1.7.0
+│       │       │   └── typing-extensions v4.15.0
+│       │       ├── async-timeout v5.0.1
+│       │       ├── attrs v25.3.0
+│       │       ├── frozenlist v1.7.0
+│       │       ├── multidict v6.6.4
+│       │       │   └── typing-extensions v4.15.0
+│       │       ├── propcache v0.3.2
+│       │       └── yarl v1.20.1
+│       │           ├── idna v3.10
+│       │           ├── multidict v6.6.4 (*)
+│       │           └── propcache v0.3.2
+│       ├── jinja2 v3.1.6
+│       │   └── markupsafe v2.1.5
+│       ├── networkx v3.4.2
+│       ├── nvidia-cublas-cu12 v12.8.4.1
+│       ├── nvidia-cuda-cupti-cu12 v12.8.90
+│       ├── nvidia-cuda-nvrtc-cu12 v12.8.93
+│       ├── nvidia-cuda-runtime-cu12 v12.8.90
+│       ├── nvidia-cudnn-cu12 v9.10.2.21
+│       │   └── nvidia-cublas-cu12 v12.8.4.1
+│       ├── nvidia-cufft-cu12 v11.3.3.83
+│       │   └── nvidia-nvjitlink-cu12 v12.8.93
+│       ├── nvidia-cufile-cu12 v1.13.1.3
+│       ├── nvidia-curand-cu12 v10.3.9.90
+│       ├── nvidia-cusolver-cu12 v11.7.3.90
+│       │   ├── nvidia-cublas-cu12 v12.8.4.1
+│       │   ├── nvidia-cusparse-cu12 v12.5.8.93
+│       │   │   └── nvidia-nvjitlink-cu12 v12.8.93
+│       │   └── nvidia-nvjitlink-cu12 v12.8.93
+│       ├── nvidia-cusparse-cu12 v12.5.8.93 (*)
+│       ├── nvidia-cusparselt-cu12 v0.7.1
+│       ├── nvidia-nccl-cu12 v2.27.3
+│       ├── nvidia-nvjitlink-cu12 v12.8.93
+│       ├── nvidia-nvtx-cu12 v12.8.90
+│       ├── sympy v1.14.0
+│       │   └── mpmath v1.3.0
+│       ├── triton v3.4.0
+│       │   └── setuptools v80.9.0
+│       └── typing-extensions v4.15.0
+├── click v8.1.0
+├── deepspeed v0.10.0
+│   ├── hjson v3.1.0
+│   ├── ninja v1.13.0
+│   ├── numpy v1.26.4
+│   ├── packaging v25.0
+│   ├── psutil v7.1.0
+│   ├── py-cpuinfo v9.0.0
+│   ├── pydantic v1.10.12
+│   │   └── typing-extensions v4.15.0
+│   ├── torch v2.8.0 (*)
+│   └── tqdm v4.67.1
+├── einops v0.6.1
+├── gradio v3.50.2
+│   ├── aiofiles v23.2.1
+│   ├── altair v5.5.0
+│   │   ├── jinja2 v3.1.6 (*)
+│   │   ├── jsonschema v4.25.1
+│   │   │   ├── attrs v25.3.0
+│   │   │   ├── jsonschema-specifications v2025.9.1
+│   │   │   │   └── referencing v0.36.2
+│   │   │   │       ├── attrs v25.3.0
+│   │   │   │       ├── rpds-py v0.27.1
+│   │   │   │       └── typing-extensions v4.15.0
+│   │   │   ├── referencing v0.36.2 (*)
+│   │   │   └── rpds-py v0.27.1
+│   │   ├── narwhals v2.6.0
+│   │   ├── packaging v25.0
+│   │   └── typing-extensions v4.15.0
+│   ├── fastapi v0.118.0
+│   │   ├── pydantic v1.10.12 (*)
+│   │   ├── starlette v0.48.0
+│   │   │   ├── anyio v4.11.0
+│   │   │   │   ├── exceptiongroup v1.3.0
+│   │   │   │   │   └── typing-extensions v4.15.0
+│   │   │   │   ├── idna v3.10
+│   │   │   │   ├── sniffio v1.3.1
+│   │   │   │   └── typing-extensions v4.15.0
+│   │   │   └── typing-extensions v4.15.0
+│   │   └── typing-extensions v4.15.0
+│   ├── ffmpy v0.6.1
+│   ├── gradio-client v0.6.1
+│   │   ├── fsspec v2025.9.0 (*)
+│   │   ├── httpx v0.28.1
+│   │   │   ├── anyio v4.11.0 (*)
+│   │   │   ├── certifi v2025.8.3
+│   │   │   ├── httpcore v1.0.9
+│   │   │   │   ├── certifi v2025.8.3
+│   │   │   │   └── h11 v0.16.0
+│   │   │   └── idna v3.10
+│   │   ├── huggingface-hub v0.35.3
+│   │   │   ├── filelock v3.19.1
+│   │   │   ├── fsspec v2025.9.0 (*)
+│   │   │   ├── hf-xet v1.1.10
+│   │   │   ├── packaging v25.0
+│   │   │   ├── pyyaml v6.0.3
+│   │   │   ├── requests v2.32.5
+│   │   │   │   ├── certifi v2025.8.3
+│   │   │   │   ├── charset-normalizer v3.4.3
+│   │   │   │   ├── idna v3.10
+│   │   │   │   └── urllib3 v2.5.0
+│   │   │   ├── tqdm v4.67.1
+│   │   │   └── typing-extensions v4.15.0
+│   │   ├── packaging v25.0
+│   │   ├── requests v2.32.5 (*)
+│   │   ├── typing-extensions v4.15.0
+│   │   └── websockets v11.0.3
+│   ├── httpx v0.28.1 (*)
+│   ├── huggingface-hub v0.35.3 (*)
+│   ├── importlib-resources v6.5.2
+│   ├── jinja2 v3.1.6 (*)
+│   ├── markupsafe v2.1.5
+│   ├── matplotlib v3.10.6
+│   │   ├── contourpy v1.3.2
+│   │   │   └── numpy v1.26.4
+│   │   ├── cycler v0.12.1
+│   │   ├── fonttools v4.60.1
+│   │   ├── kiwisolver v1.4.9
+│   │   ├── numpy v1.26.4
+│   │   ├── packaging v25.0
+│   │   ├── pillow v10.4.0
+│   │   ├── pyparsing v3.2.5
+│   │   └── python-dateutil v2.9.0.post0
+│   │       └── six v1.17.0
+│   ├── numpy v1.26.4
+│   ├── orjson v3.11.3
+│   ├── packaging v25.0
+│   ├── pandas v2.3.3
+│   │   ├── numpy v1.26.4
+│   │   ├── python-dateutil v2.9.0.post0 (*)
+│   │   ├── pytz v2025.2
+│   │   └── tzdata v2025.2
+│   ├── pillow v10.4.0
+│   ├── pydantic v1.10.12 (*)
+│   ├── pydub v0.25.1
+│   ├── python-multipart v0.0.20
+│   ├── pyyaml v6.0.3
+│   ├── requests v2.32.5 (*)
+│   ├── semantic-version v2.10.0
+│   ├── typing-extensions v4.15.0
+│   ├── uvicorn v0.37.0
+│   │   ├── click v8.1.0
+│   │   ├── h11 v0.16.0
+│   │   └── typing-extensions v4.15.0
+│   └── websockets v11.0.3
+├── num2words v0.5.14
+│   └── docopt v0.6.2
+├── paddleocr v2.6.0.1
+│   ├── attrdict v2.0.1
+│   │   └── six v1.17.0
+│   ├── cython v3.1.4
+│   ├── imgaug v0.4.0
+│   │   ├── imageio v2.37.0
+│   │   │   ├── numpy v1.26.4
+│   │   │   └── pillow v10.4.0
+│   │   ├── matplotlib v3.10.6 (*)
+│   │   ├── numpy v1.26.4
+│   │   ├── opencv-python v4.11.0.86
+│   │   │   └── numpy v1.26.4
+│   │   ├── pillow v10.4.0
+│   │   ├── scikit-image v0.25.2
+│   │   │   ├── imageio v2.37.0 (*)
+│   │   │   ├── lazy-loader v0.4
+│   │   │   │   └── packaging v25.0
+│   │   │   ├── networkx v3.4.2
+│   │   │   ├── numpy v1.26.4
+│   │   │   ├── packaging v25.0
+│   │   │   ├── pillow v10.4.0
+│   │   │   ├── scipy v1.15.3
+│   │   │   │   └── numpy v1.26.4
+│   │   │   └── tifffile v2025.5.10
+│   │   │       └── numpy v1.26.4
+│   │   ├── scipy v1.15.3 (*)
+│   │   ├── shapely v2.1.2
+│   │   │   └── numpy v1.26.4
+│   │   └── six v1.17.0
+│   ├── lmdb v1.7.3
+│   ├── lxml v6.0.2
+│   ├── numpy v1.26.4
+│   ├── opencv-contrib-python v4.11.0.86
+│   │   └── numpy v1.26.4
+│   ├── opencv-python v4.11.0.86 (*)
+│   ├── openpyxl v3.1.5
+│   │   └── et-xmlfile v2.0.0
+│   ├── premailer v3.10.0
+│   │   ├── cachetools v6.2.0
+│   │   ├── cssselect v1.3.0
+│   │   ├── cssutils v2.11.1
+│   │   │   └── more-itertools v10.8.0
+│   │   ├── lxml v6.0.2
+│   │   └── requests v2.32.5 (*)
+│   ├── pyclipper v1.3.0.post6
+│   ├── rapidfuzz v3.14.1
+│   ├── scikit-image v0.25.2 (*)
+│   ├── shapely v2.1.2 (*)
+│   ├── tqdm v4.67.1
+│   └── visualdl v2.5.3
+│       ├── bce-python-sdk v0.9.46
+│       │   ├── future v1.0.0
+│       │   ├── pycryptodome v3.23.0
+│       │   └── six v1.17.0
+│       ├── flask v2.2.5
+│       │   ├── click v8.1.0
+│       │   ├── itsdangerous v2.2.0
+│       │   ├── jinja2 v3.1.6 (*)
+│       │   └── werkzeug v3.1.3
+│       │       └── markupsafe v2.1.5
+│       ├── flask-babel v4.0.0
+│       │   ├── babel v2.17.0
+│       │   ├── flask v2.2.5 (*)
+│       │   ├── jinja2 v3.1.6 (*)
+│       │   └── pytz v2025.2
+│       ├── matplotlib v3.10.6 (*)
+│       ├── numpy v1.26.4
+│       ├── packaging v25.0
+│       ├── pandas v2.3.3 (*)
+│       ├── pillow v10.4.0
+│       ├── protobuf v6.32.1
+│       ├── psutil v7.1.0
+│       ├── rarfile v4.2
+│       ├── requests v2.32.5 (*)
+│       └── six v1.17.0
+├── pillow v10.4.0
+├── pip v25.2
+├── pydantic v1.10.12 (*)
+├── seaborn v0.13.2
+│   ├── matplotlib v3.10.6 (*)
+│   ├── numpy v1.26.4
+│   └── pandas v2.3.3 (*)
+├── spacy v3.8.7
+│   ├── catalogue v2.0.10
+│   ├── cymem v2.0.11
+│   ├── jinja2 v3.1.6 (*)
+│   ├── langcodes v3.5.0
+│   │   └── language-data v1.3.0
+│   │       └── marisa-trie v1.3.1
+│   ├── murmurhash v1.0.13
+│   ├── numpy v1.26.4
+│   ├── packaging v25.0
+│   ├── preshed v3.0.10
+│   │   ├── cymem v2.0.11
+│   │   └── murmurhash v1.0.13
+│   ├── pydantic v1.10.12 (*)
+│   ├── requests v2.32.5 (*)
+│   ├── setuptools v80.9.0
+│   ├── spacy-legacy v3.0.12
+│   ├── spacy-loggers v1.0.5
+│   ├── srsly v2.5.1
+│   │   └── catalogue v2.0.10
+│   ├── thinc v8.3.4
+│   │   ├── blis v1.2.1
+│   │   │   └── numpy v1.26.4
+│   │   ├── catalogue v2.0.10
+│   │   ├── confection v0.1.5
+│   │   │   ├── pydantic v1.10.12 (*)
+│   │   │   └── srsly v2.5.1 (*)
+│   │   ├── cymem v2.0.11
+│   │   ├── murmurhash v1.0.13
+│   │   ├── numpy v1.26.4
+│   │   ├── packaging v25.0
+│   │   ├── preshed v3.0.10 (*)
+│   │   ├── pydantic v1.10.12 (*)
+│   │   ├── setuptools v80.9.0
+│   │   ├── srsly v2.5.1 (*)
+│   │   └── wasabi v1.1.3
+│   ├── tqdm v4.67.1
+│   ├── typer v0.9.4
+│   │   ├── click v8.1.0
+│   │   └── typing-extensions v4.15.0
+│   ├── wasabi v1.1.3
+│   └── weasel v0.4.1
+│       ├── cloudpathlib v0.22.0
+│       │   └── typing-extensions v4.15.0
+│       ├── confection v0.1.5 (*)
+│       ├── packaging v25.0
+│       ├── pydantic v1.10.12 (*)
+│       ├── requests v2.32.5 (*)
+│       ├── smart-open v6.4.0
+│       ├── srsly v2.5.1 (*)
+│       ├── typer v0.9.4 (*)
+│       └── wasabi v1.1.3
+├── swissarmytransformer v0.4.12
+│   ├── boto3 v1.40.44
+│   │   ├── botocore v1.40.44
+│   │   │   ├── jmespath v1.0.1
+│   │   │   ├── python-dateutil v2.9.0.post0 (*)
+│   │   │   └── urllib3 v2.5.0
+│   │   ├── jmespath v1.0.1
+│   │   └── s3transfer v0.14.0
+│   │       └── botocore v1.40.44 (*)
+│   ├── cpm-kernels v1.0.11
+│   ├── datasets v4.1.1
+│   │   ├── dill v0.4.0
+│   │   ├── filelock v3.19.1
+│   │   ├── fsspec[http] v2025.9.0 (*)
+│   │   ├── huggingface-hub v0.35.3 (*)
+│   │   ├── multiprocess v0.70.16
+│   │   │   └── dill v0.4.0
+│   │   ├── numpy v1.26.4
+│   │   ├── packaging v25.0
+│   │   ├── pandas v2.3.3 (*)
+│   │   ├── pyarrow v21.0.0
+│   │   ├── pyyaml v6.0.3
+│   │   ├── requests v2.32.5 (*)
+│   │   ├── tqdm v4.67.1
+│   │   └── xxhash v3.6.0
+│   ├── deepspeed v0.10.0 (*)
+│   ├── einops v0.6.1
+│   ├── sentencepiece v0.2.1
+│   ├── tensorboardx v2.6.4
+│   │   ├── numpy v1.26.4
+│   │   ├── packaging v25.0
+│   │   └── protobuf v6.32.1
+│   ├── torch v2.8.0 (*)
+│   ├── transformers v4.56.2
+│   │   ├── filelock v3.19.1
+│   │   ├── huggingface-hub v0.35.3 (*)
+│   │   ├── numpy v1.26.4
+│   │   ├── packaging v25.0
+│   │   ├── pyyaml v6.0.3
+│   │   ├── regex v2025.9.18
+│   │   ├── requests v2.32.5 (*)
+│   │   ├── safetensors v0.6.2
+│   │   ├── tokenizers v0.22.1
+│   │   │   └── huggingface-hub v0.35.3 (*)
+│   │   └── tqdm v4.67.1
+│   └── webdataset v1.0.2
+│       ├── braceexpand v0.1.7
+│       ├── numpy v1.26.4
+│       └── pyyaml v6.0.3
+├── timm v1.0.20
+│   ├── huggingface-hub v0.35.3 (*)
+│   ├── pyyaml v6.0.3
+│   ├── safetensors v0.6.2
+│   ├── torch v2.8.0 (*)
+│   └── torchvision v0.23.0
+│       ├── numpy v1.26.4
+│       ├── pillow v10.4.0
+│       └── torch v2.8.0 (*)
+├── torch v2.8.0 (*)
+├── torchvision v0.23.0 (*)
+├── transformers v4.56.2 (*)
+├── wandb v0.22.1
+│   ├── click v8.1.0
+│   ├── gitpython v3.1.45
+│   │   └── gitdb v4.0.12
+│   │       └── smmap v5.0.2
+│   ├── packaging v25.0
+│   ├── platformdirs v4.4.0
+│   ├── protobuf v6.32.1
+│   ├── pydantic v1.10.12 (*)
+│   ├── pyyaml v6.0.3
+│   ├── requests v2.32.5 (*)
+│   ├── sentry-sdk v2.39.0
+│   │   ├── certifi v2025.8.3
+│   │   └── urllib3 v2.5.0
+│   └── typing-extensions v4.15.0
+└── xformers v0.0.32.post2
+    ├── numpy v1.26.4
+    └── torch v2.8.0 (*)
+(*) Package tree already displayed

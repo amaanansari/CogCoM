@@ -3,9 +3,9 @@ name = "cogcom"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = "==3.10.18"
+requires-python = "==3.11.13"
 dependencies = [
-    "bitsandbytes>=0.48.1",
+    "bitsandbytes",
     "deepspeed==0.10.0",
     "einops==0.6.1",
     "gradio==3.50.2",
@@ -16,11 +16,11 @@ dependencies = [
     "spacy>=3.8.7",
     "swissarmytransformer>=0.4.8",
     "timm>=0.9.12",
-    "torch>=2.1.2",
+    "torch==2.2.0",
     "torchvision>=0.16.0",
     "transformers>=4.37.0",
     "wandb>=0.22.1",
-    "xformers>=0.0.24",
+    "xformers==0.0.24",
     "spacy>=3.6.0",
     "pip>=25.2",
     "click<=8.1",
