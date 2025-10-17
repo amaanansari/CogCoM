@@ -1,9 +1,10 @@
 """answer question base on the content of the image
 @File    :   com_dataset.py
 @Time    :   2024/2/4
-@Author  :   Ji Qi 
+@Author  :   Ji Qi
 @Contact :   qj20@mails.tsinghua.edu.cn
 """
+
 import json, re
 import random
 import torch
@@ -59,7 +60,7 @@ crop_and_zoomin_prompts = [
     "Run the CROP_AND_ZOOMIN({BBX}, {X}) manipulation on {BBX}, crop the image around the rectangular box, enlarge the resultant piece by {X} times to get a replacement image, and feed it back.",
     "Execute the CROP_AND_ZOOMIN({BBX}, {X}) manipulation on {BBX}, crop the identified image along this rectangle, magnify it by {X} times over to create a new image, and introduce it back as an input.",
     "Utilize the CROP_AND_ZOOMIN({BBX}, {X}) manipulation on {BBX} for cropping the existing picture, multiply by {X} the size of the cropped section, produce a new picture which is then re-inputted.",
-    "Engage the CROP_AND_ZOOMIN({BBX}, {X}) on the {BBX} area, crop the existing image along this box, amplify it {X} times to yield the new image, which should then be reintroduced as input."
+    "Engage the CROP_AND_ZOOMIN({BBX}, {X}) on the {BBX} area, crop the existing image along this box, amplify it {X} times to yield the new image, which should then be reintroduced as input.",
 ]
 
 # prompts to start COM
@@ -80,27 +81,28 @@ class Node:
         self.key = key
         self.data = data
 
+
 def build_tree(dict_tree):
     dtree = {}
     max_depth = 0
-    for k,v in dict_tree.items():
-        k = k.replace('*', '~')
+    for k, v in dict_tree.items():
+        k = k.replace("*", "~")
         dtree[k] = v
-        max_depth  = (k.split('--')[1].split(',')[0])
+        max_depth = k.split("--")[1].split(",")[0]
 
     tree = {}
     for key in sorted(dtree.keys()):
-        fid, curid = key.split('--')
-        flevel, ford = fid.split(',')
-        clevel, cord = curid.split(',')
-        if ford == '~':
-            for i in range(1000): # maximum
-                fid = f'{flevel},{i}'
+        fid, curid = key.split("--")
+        flevel, ford = fid.split(",")
+        clevel, cord = curid.split(",")
+        if ford == "~":
+            for i in range(1000):  # maximum
+                fid = f"{flevel},{i}"
                 if fid not in tree:
-                    if fid.split(',')[0] == '-1' and i==0: # one root
+                    if fid.split(",")[0] == "-1" and i == 0:  # one root
                         tree[fid] = [Node(dtree[key], key)]
                         if clevel != max_depth:
-                            tree[curid] = [] # add current node !
+                            tree[curid] = []  # add current node !
                     break
                 tree[fid].append(Node(dtree[key], key))
                 if clevel != max_depth:
@@ -116,83 +118,105 @@ def find_paths(tree):
     paths = []
     level = 0
     path = []
+
     def dfs(node):
         nonlocal tree, path
-        fid, curid = node.key.split('--')
+        fid, curid = node.key.split("--")
         path.append(node)
-        if 'found' in node.data and node.data['found']:
+        if "found" in node.data and node.data["found"]:
             # paths.append([n.data['found'] for n in path])
             paths.append([n.data for n in path])
         if curid in tree:
             for child in tree[curid]:
                 dfs(child)
         path.pop()
+
     # for root in tree[0]:
-    for root in tree.get('-1,0', []):
+    for root in tree.get("-1,0", []):
         dfs(root)
     return paths
 
 
 def manipulate_image(pil_image, func, param, unrefine=True) -> Image:
-    """ Manipulate original image and produce a new image if possible, otherwise return the original image.
-      Args:
-        @pil_image: an image instance of PIL.Image
-        @func: name of the manipulation function, where currently supporting: [crop_and_zoomin, ]
-        @para: input parameter of the manipulation function
-      Return:
-        an produced (or original) image instance of PIL.Image
+    """Manipulate original image and produce a new image if possible, otherwise return the original image.
+    Args:
+      @pil_image: an image instance of PIL.Image
+      @func: name of the manipulation function, where currently supporting: [crop_and_zoomin, ]
+      @para: input parameter of the manipulation function
+    Return:
+      an produced (or original) image instance of PIL.Image
     """
     new_img = pil_image
     try:
-        if func and 'crop_and_zoomin' in func.lower():
+        if func and "crop_and_zoomin" in func.lower():
             box = None
-            if isinstance(param, list) and param and (isinstance(param[0], int) or isinstance(param[0], float)):
+            if (
+                isinstance(param, list)
+                and param
+                and (isinstance(param[0], int) or isinstance(param[0], float))
+            ):
                 box = param
-            elif isinstance(param, list) and param and isinstance(param[0], list) and (isinstance(param[0][0], int) or isinstance(param[0][0], float)):
+            elif (
+                isinstance(param, list)
+                and param
+                and isinstance(param[0], list)
+                and (
+                    isinstance(param[0][0], int)
+                    or isinstance(param[0][0], float)
+                )
+            ):
                 box = param[0]
             if box:
                 if unrefine:
                     box = unrefine_box(box, new_img.size[0], new_img.size[1])
                 new_img = new_img.crop(box)
-                new_img = new_img.resize((new_img.size[0]*2, new_img.size[1]*2), Image.Resampling.BICUBIC)
+                new_img = new_img.resize(
+                    (new_img.size[0] * 2, new_img.size[1] * 2),
+                    Image.Resampling.BICUBIC,
+                )
     except:
         new_img = pil_image
-        print_rank0(f'Failed to manipulate image with func: {func}, param: {param}')
+        print_rank0(
+            f"Failed to manipulate image with func: {func}, param: {param}"
+        )
     # print(f'Manipulating image from original size of {pil_image.size} to new size {new_img.size} ...')
     return new_img
 
-        
-def process_fn_COMWebDataset(args, vis_processor, text_processor, cross_image_processor,  src):
+
+def process_fn_COMWebDataset(
+    args, vis_processor, text_processor, cross_image_processor, src
+):
     for data in src:
+        img_0_bytes = data["png"] if "png" in data else data["jpg"]
+        img_0 = Image.open(BytesIO(img_0_bytes)).convert("RGB")
 
-        img_0_bytes = data['png'] if 'png' in data else data['jpg']
-        img_0 = Image.open(BytesIO(img_0_bytes)).convert('RGB')
-
-        metadata = pickle.loads(data['metadata.pyd'])
+        metadata = pickle.loads(data["metadata.pyd"])
         for ex in metadata:
-
-            com_tree = build_tree(ex['final_com'])
+            com_tree = build_tree(ex["final_com"])
             com_chains = find_paths(com_tree)
 
             # initial text
-            init_prompt = random.choice(start_prompts).format(QUESTION=ex['question'])
-            final_answer = random.choice(end_prompts).format(ANSWER=ex['answer'])
-            
-            com_founds = ex['com_founds']
+            init_prompt = random.choice(start_prompts).format(
+                QUESTION=ex["question"]
+            )
+            final_answer = random.choice(end_prompts).format(
+                ANSWER=ex["answer"]
+            )
+
+            com_founds = ex["com_founds"]
             # for chain in ex['com_chains']:
             for chain in com_chains:
-                
                 # Currently, store complete-prompt at each turn, and new-image at each turn.
                 # TO-DO: store new-prompt, and new-image at each turn, and use history+new when inputing to model at each turn
-                result_turns = [] # multi-turn
+                result_turns = []  # multi-turn
 
                 imgs_turns = []
                 # img_0 = Image.open(ex['img_path']).convert('RGB')
                 imgs_turns.append(img_0)
 
-                txt_turns = [] # (prompt, answer)
+                txt_turns = []  # (prompt, answer)
                 # txt_turns.append({'prompt': '<EOI>' + init_prompt, 'answer': ""})
-                txt_turns.append({'prompt': init_prompt, 'answer': ""})
+                txt_turns.append({"prompt": init_prompt, "answer": ""})
 
                 turn = 0
                 history = []
@@ -201,47 +225,77 @@ def process_fn_COMWebDataset(args, vis_processor, text_processor, cross_image_pr
                 ii = 0
                 max_turn = 3
                 # cropped = False
-                cropped = ex.get('cropped', False)
+                cropped = ex.get("cropped", False)
                 # while ii < len(chain):
-                while ii < len(chain) and turn<max_turn:
-                # for ii, stp in enumerate(chain):
+                while ii < len(chain) and turn < max_turn:
+                    # for ii, stp in enumerate(chain):
                     # func, param, variables, onbox, ret, desc, found = stp['func'], stp['param'], stp['variables'], stp['onbox'], stp['return'], stp['desc'], stp['found']
                     stp = chain[ii]
-                    func, param, variables, onbox, ret, desc, found = stp['func'], stp['param'], stp['variables'], stp['onbox'], stp['return'], stp['desc'], stp['found']
+                    func, param, variables, onbox, ret, desc, found = (
+                        stp["func"],
+                        stp["param"],
+                        stp["variables"],
+                        stp["onbox"],
+                        stp["return"],
+                        stp["desc"],
+                        stp["found"],
+                    )
                     if variables:
                         ch_variables.update(variables)
 
                     img = imgs_turns[turn]
                     # img_dict = {'vision': self.vis_processor(img)}
-                    img_dict = {'vision_'+k: v for k,v in vis_processor(img).items()}
+                    img_dict = {
+                        "vision_" + k: v for k, v in vis_processor(img).items()
+                    }
                     if cross_image_processor:
-                        img_dict.update({'cross_'+k: v for k,v in cross_image_processor(img).items()})
+                        img_dict.update(
+                            {
+                                "cross_" + k: v
+                                for k, v in cross_image_processor(img).items()
+                            }
+                        )
                     scale, width, height = parse_resize(img, 400, 14)
 
                     # replace variables
                     # if variables:
                     if ch_variables:
                         # ptr = re.compile(r'`[a-z]+_\d+`')
-                        ptr = re.compile(r'`[a-z\_\d]+`')
+                        ptr = re.compile(r"`[a-z\_\d]+`")
                         for var in ptr.findall(desc):
                             pure_var = var[1:-1]
                             # value = variables.get(pure_var, var)
                             value = ch_variables.get(pure_var, var)
                             value = value if value else var
                             if type(value) == list:
-                                boxes = value if type(value[0])==list else [value]
-                                value = boxes2txt({'boxes':boxes}, scale, width, height) # using CogVLM transformation
+                                boxes = (
+                                    value
+                                    if type(value[0]) == list
+                                    else [value]
+                                )
+                                value = boxes2txt(
+                                    {"boxes": boxes}, scale, width, height
+                                )  # using CogVLM transformation
                             # elif 'img' in value:
                             #     # value = "the new image"
                             #     value = "the new image <%s>" % value[1:-1].upper()
                             # desc = desc.replace(var, value)
-                            desc = re.sub(f'{var}', f'{value}', desc)
-                            
+                            desc = re.sub(f"{var}", f"{value}", desc)
+
                     # Insert crop_and_zoomin manipulation:
                     #    (1) 'onbox' is much smaller than original image; (2) enlarge X=2/3/4 times
-                    if random.random() <= 1.0 and not cropped and isinstance(onbox, list) and onbox and (isinstance(onbox[0], int) or isinstance([onbox[0]], float)):
+                    if (
+                        random.random() <= 1.0
+                        and not cropped
+                        and isinstance(onbox, list)
+                        and onbox
+                        and (
+                            isinstance(onbox[0], int)
+                            or isinstance([onbox[0]], float)
+                        )
+                    ):
                         area_i = img_0.size[0] * img_0.size[1]
-                        area_b = (onbox[2]-onbox[0]) * (onbox[3]-onbox[1])
+                        area_b = (onbox[2] - onbox[0]) * (onbox[3] - onbox[1])
                         zoom_x = 1
                         if area_i / area_b >= 100:
                             zoom_x = 4
@@ -252,37 +306,55 @@ def process_fn_COMWebDataset(args, vis_processor, text_processor, cross_image_pr
                         if zoom_x > 1:
                             cz_prompt = random.choice(crop_and_zoomin_prompts)
                             scale0, w0, h0 = parse_resize(img, 400, 14)
-                            cz_bx = boxes2txt({'boxes':[onbox]}, scale0, w0, h0) # using CogVLM transformation
+                            cz_bx = boxes2txt(
+                                {"boxes": [onbox]}, scale0, w0, h0
+                            )  # using CogVLM transformation
                             # cz_prompt = cz_prompt.format(BBX=cz_bx, X=num2words(zoom_x, to='cardinal'))
                             cz_prompt = cz_prompt.format(BBX=cz_bx, X=zoom_x)
-                            ret, func, desc = 'img', 'crop_and_zoomin', cz_prompt
+                            ret, func, desc = (
+                                "img",
+                                "crop_and_zoomin",
+                                cz_prompt,
+                            )
                             cropped = True
                             ii -= 1
 
-                    txt_turns[turn]['answer'] = str.strip(txt_turns[turn]['answer'] + ' ' + desc)
-                    if ii == len(chain)-1: # last trun
-                        txt_turns[turn]['answer'] = txt_turns[turn]['answer'] + ' ' + final_answer
+                    txt_turns[turn]["answer"] = str.strip(
+                        txt_turns[turn]["answer"] + " " + desc
+                    )
+                    if ii == len(chain) - 1:  # last trun
+                        txt_turns[turn]["answer"] = (
+                            txt_turns[turn]["answer"] + " " + final_answer
+                        )
 
-                    if (ret and 'img' in ret) or ii==len(chain)-1: # Start a new turn || The last turn
+                    if (ret and "img" in ret) or ii == len(
+                        chain
+                    ) - 1:  # Start a new turn || The last turn
                         # text
                         # prompt = self.text_processor.history_to_prompt(history=[], question=txt_turns[turn]['prompt'], add_eoi_first=True)
                         result = {}
                         # text_dict = text_processor(txt_turns[turn]['answer'], prompt=txt_turns[turn]['prompt'], history=history)
-                        text_dict = text_processor(txt_turns[turn]['answer'], prompt=txt_turns[turn]['prompt'], history=history_accum)
+                        text_dict = text_processor(
+                            txt_turns[turn]["answer"],
+                            prompt=txt_turns[turn]["prompt"],
+                            history=history_accum,
+                        )
                         if text_dict is None:
                             ii += 1
                             continue
                         result.update(text_dict)
                         # image
                         result.update(img_dict)
-                        result_turns.append(result) # a finished turn
-                        
-                        if ret and 'img' in ret:
+                        result_turns.append(result)  # a finished turn
+
+                        if ret and "img" in ret:
                             # new prompt
                             # new_prompt = txt_turns[turn]['answer'] + '<EOI>' # mark image position
                             # new_prompt = '<EOI>Based on this new image and the reasoning history:' # mark image position
                             new_prompt = HARD_PROMPT
-                            txt_turns.append({'prompt': new_prompt, 'answer':''})
+                            txt_turns.append(
+                                {"prompt": new_prompt, "answer": ""}
+                            )
 
                             # Produce a new image
                             # if 'crop_and_zoomin' in func.lower():
@@ -292,19 +364,53 @@ def process_fn_COMWebDataset(args, vis_processor, text_processor, cross_image_pr
                             #     imgs_turns.append(img)
                             new_img = manipulate_image(img, func, onbox)
                             imgs_turns.append(new_img)
-                        history.append((txt_turns[turn]['prompt'], txt_turns[turn]['answer']))
+                        history.append(
+                            (
+                                txt_turns[turn]["prompt"],
+                                txt_turns[turn]["answer"],
+                            )
+                        )
                         if history_accum:
-                            history_accum = history_accum + ' ' + txt_turns[turn]['prompt'] + ' ' + txt_turns[turn]['answer']
+                            history_accum = (
+                                history_accum
+                                + " "
+                                + txt_turns[turn]["prompt"]
+                                + " "
+                                + txt_turns[turn]["answer"]
+                            )
                         else:
-                            history_accum = txt_turns[turn]['prompt'] + ' ' + txt_turns[turn]['answer']
+                            history_accum = (
+                                txt_turns[turn]["prompt"]
+                                + " "
+                                + txt_turns[turn]["answer"]
+                            )
                         turn += 1
                     ii += 1
                 if not result_turns or not result_turns[0]:
                     continue
                 yield result_turns
 
+
 from sat.data_utils.webds import SimpleDistributedWebDataset
 from functools import partial
 
-def CoMDatasetProcessor(urls, args, vis_processor, text_processor, cross_image_processor=None, **kwargs):
-    return SimpleDistributedWebDataset(urls, partial(process_fn_COMWebDataset, args, vis_processor, text_processor, cross_image_processor), args.seed)
+
+def CoMDatasetProcessor(
+    urls,
+    args,
+    vis_processor,
+    text_processor,
+    cross_image_processor=None,
+    **kwargs,
+):
+    return SimpleDistributedWebDataset(
+        urls,
+        partial(
+            process_fn_COMWebDataset,
+            args,
+            vis_processor,
+            text_processor,
+            cross_image_processor,
+        ),
+        args.seed,
+    )

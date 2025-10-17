@@ -2,6 +2,7 @@ from torchvision import transforms
 from torchvision.transforms.functional import InterpolationMode
 import torch
 
+
 class BlipImageEvalProcessor:
     def __init__(self, image_size=384, mean=None, std=None):
         super().__init__()
@@ -15,7 +16,8 @@ class BlipImageEvalProcessor:
         self.transform = transforms.Compose(
             [
                 transforms.Resize(
-                    (image_size, image_size), interpolation=InterpolationMode.BICUBIC
+                    (image_size, image_size),
+                    interpolation=InterpolationMode.BICUBIC,
                 ),
                 transforms.ToTensor(),
                 self.normalize,
@@ -25,10 +27,21 @@ class BlipImageEvalProcessor:
     def __call__(self, item):
         return self.transform(item)
 
+
 from functools import partial
 
+
 def blip2_image_processor_func_with_inputs(image_processor, image):
-    return {'image': image_processor(image).unsqueeze(0), 'input_ids': torch.zeros(1, 1, dtype=torch.long), 'position_ids': None, 'attention_mask': torch.ones(1, 1, dtype=torch.long)}
+    return {
+        "image": image_processor(image).unsqueeze(0),
+        "input_ids": torch.zeros(1, 1, dtype=torch.long),
+        "position_ids": None,
+        "attention_mask": torch.ones(1, 1, dtype=torch.long),
+    }
+
 
 def get_image_processor(image_size):
-    return partial(blip2_image_processor_func_with_inputs, BlipImageEvalProcessor(image_size))
+    return partial(
+        blip2_image_processor_func_with_inputs,
+        BlipImageEvalProcessor(image_size),
+    )
