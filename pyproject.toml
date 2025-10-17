@@ -29,3 +29,16 @@ dependencies = [
     "pandas>=2.3.3",
     "en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.1",
+]
+
+[tool.ruff]
+# set the max line length to 79
+line-length = 79
+
+[tool.ruff.lint]
+# ensure the “line-too-long” rule is enabled (E501)
+extend-select = ["E501"]
