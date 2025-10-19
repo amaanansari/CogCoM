@@ -155,5 +155,5 @@ checkpoints/
 runs/
 
 # Python
-models/
-data/
+/models/
+/data/
