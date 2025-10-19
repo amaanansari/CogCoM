@@ -41,4 +41,16 @@ line-length = 79
 
 [tool.ruff.lint]
 # ensure the “line-too-long” rule is enabled (E501)
+select = ["ALL"]
 extend-select = ["E501"]
+ignore = [
+  # docstring rule pairs are mutually exclusive
+  # choose D213 (summary on second line) and ignore the opposite pair
+  "D203", "D212",
+
+  # formatter conflicts (Ruff’s docs recommend avoiding these with the formatter)
+  "W191", "E111", "E114", "E117", "D206", "D300",
+  "Q000", "Q001", "Q002", "Q003",
+  "COM812", "COM819",
+  "ISC001"  # some versions warn on this when formatting
+]

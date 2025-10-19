@@ -154,6 +154,8 @@ save/
 checkpoints/
 runs/
 
-# Python
+# Manual exclusions
 /models/
 /data/
+/.uv-cache/
+/.ruff_cache/
