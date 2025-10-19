@@ -1,4 +1,3 @@
-import torch.nn.functional as F
 from utils.com_utils import manipulate_image
 from transformers import LlamaTokenizer
 import re

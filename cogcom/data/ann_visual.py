@@ -1,13 +1,11 @@
 import argparse
 import os
-import sys
 
 import numpy as np
-import torch
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 import tqdm
-from typing import List, Dict, Tuple
-import re, json
+import re
+import json
 import random
 import collections
 
@@ -34,7 +32,7 @@ def load_image(image_path, onbox=None):
     return image_pil, ori_size
 
 
-from paddleocr import PaddleOCR, draw_ocr
+from paddleocr import PaddleOCR
 
 ocr_tool = PaddleOCR(use_angle_cls=True, lang="en", show_log=False)
 

@@ -1,23 +1,10 @@
-import os, sys
-import re
+import os
 import json
-import urllib3
 
 # import jsonlines
-import random
 import argparse
-import pandas as pd
 from tqdm import tqdm
-import numpy as np
-from typing import List, Dict
-import multiprocessing
-import itertools
 import glob
-from functools import partial
-import time
-import requests
-import stanza
-import nltk
 
 
 def process_one_line(data):

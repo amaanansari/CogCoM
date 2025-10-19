@@ -1,11 +1,7 @@
 import math
 import spacy
 import re
-import io
-import seaborn as sns
-import numpy as np
-from PIL import Image, ImageDraw, ImageFont
-import matplotlib.font_manager
+from PIL import ImageDraw
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib.ticker import FuncFormatter

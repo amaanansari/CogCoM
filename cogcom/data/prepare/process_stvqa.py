@@ -5,13 +5,9 @@
 @Contact :   qj20@mails.tsinghua.edu.cn
 """
 
-from argparse import ArgumentParser
 import json
 from pathlib import Path
-import re
-import random
 import os
-from os.path import exists
 import tqdm
 from collections import Counter
 

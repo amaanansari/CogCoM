@@ -1,17 +1,9 @@
-import re
-import time
-import random
 import json
-import glob
-import openai
 import requests
 import traceback
 import uuid
 import argparse
 from PIL import Image
-import random
-import json
-import time
 
 GPT4VTOKENS = [""]
 

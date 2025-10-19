@@ -5,12 +5,9 @@
 @Contact :   qj20@mails.tsinghua.edu.cn
 """
 
-from argparse import ArgumentParser
 import json
 from pathlib import Path
-import random
 import os
-from os.path import exists
 import tqdm
 from collections import Counter
 
@@ -80,7 +77,7 @@ class InstructData:
                 answer = select_answer_by_confidence(qa_info["answers"])
                 if answer is None:
                     drop_num += 1
-                    print(f"no confidenced answer!")
+                    print("no confidenced answer!")
                     continue
                 c_data = {
                     "unique_id": "TDIUC-%s" % qa_info["question_id"],

@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -7,14 +8,13 @@ import argparse
 import numpy as np
 import copy
 from braceexpand import braceexpand
-from sat import mpu, get_args, get_tokenizer
+from sat import mpu, get_args
 from sat.training.deepspeed_training import training_main
 from sat.helpers import print_rank0
 from collections import defaultdict
 from models import FineTuneTrainCogCoMModel
 from utils import (
     llama2_text_processor,
-    llama2_text_processor_inference,
     llama2_tokenizer,
     get_image_processor,
 )

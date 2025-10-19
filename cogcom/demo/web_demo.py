@@ -13,7 +13,8 @@ experience, refer to the 'composite_demo'.
 """
 
 import gradio as gr
-import os, sys
+import os
+import sys
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -28,7 +29,6 @@ from utils import (
     get_image_processor,
     llama2_tokenizer,
     llama2_text_processor_inference,
-    parse_response,
 )
 
 
@@ -60,7 +60,6 @@ def process_image_without_resize(image_prompt):
     return image, filename_grounding
 
 
-from sat.quantization.kernels import quantize
 
 
 def load_model(args):
@@ -87,7 +86,6 @@ def load_model(args):
         else {},
     )
     model = model.eval()
-    from sat.mpu import get_model_parallel_world_size
 
     assert world_size == get_model_parallel_world_size(), (
         "world size must equal to model parallel size for cli_demo!"

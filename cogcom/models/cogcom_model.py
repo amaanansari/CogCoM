@@ -7,12 +7,9 @@ Specifically,
 from sat.model.official.llama_model import LLaMAModel
 import json
 import torch
-import torch.nn.functional as F
 from sat.model.base_model import BaseMixin
-import math
 import torch.nn as nn
 from .mixin import LlamaVisionExpertFCMixin, LlamaVisionExpertAttnMixin
-from sat import mpu
 import torch.nn.init as init
 
 from sat.resources.urls import MODEL_URLS

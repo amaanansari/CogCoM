@@ -5,18 +5,13 @@
 @Contact :   qj20@mails.tsinghua.edu.cn
 """
 
-import json, re
+import re
 import random
-import torch
-import torch.utils.data as data
 import pickle
-import collections
 from io import BytesIO
 from PIL import Image
-import glob
 from .grounding_parser import parse_resize, boxes2txt, unrefine_box
 from sat.helpers import print_rank0
-from num2words import num2words
 from .com_utils import HARD_PROMPT, build_tree, find_paths, manipulate_image
 
 

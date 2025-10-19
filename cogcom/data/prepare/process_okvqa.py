@@ -5,12 +5,9 @@
 @Contact :   qj20@mails.tsinghua.edu.cn
 """
 
-from argparse import ArgumentParser
 import json
 from pathlib import Path
-import random
 import os
-from os.path import exists
 import tqdm
 from pycocotools.coco import COCO
 from collections import Counter
@@ -84,7 +81,7 @@ class InstructData:
                 )
                 if answer is None:
                     drop_num += 1
-                    print(f"no confidenced answer!")
+                    print("no confidenced answer!")
                     continue
                 c_data = {
                     "unique_id": "OKVQA-%s" % qa_info["question_id"],

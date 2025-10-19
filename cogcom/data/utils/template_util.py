@@ -1,7 +1,6 @@
 import numpy as np
 from pathlib import Path
 import json
-import os
 
 
 # with open(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'templates_v1.json')) as f:

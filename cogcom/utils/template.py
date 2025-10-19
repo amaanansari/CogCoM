@@ -1,8 +1,6 @@
 # from email.mime import image
 import string
 import random
-import pdb
-import json
 
 random.seed(7)
 
@@ -462,11 +460,11 @@ def build_instruction(
     # image generation tasks
     elif task == "infilling":
         instructs = [
-            f"Fill in the missing part of the image.",
-            f"Generate the missing part of the image.",
-            f"Generate masked part of the image.",
-            f"Generate the part of the image covered by the black square.",
-            f"Generate the part of the image covered by black.",
+            "Fill in the missing part of the image.",
+            "Generate the missing part of the image.",
+            "Generate masked part of the image.",
+            "Generate the part of the image covered by the black square.",
+            "Generate the part of the image covered by black.",
         ]
     elif task == "im_region_extraction":
         instructs = [
@@ -785,11 +783,11 @@ def build_instruction(
         raise NotImplementedError
     elif task == "visual_text_extraction":
         instructs = [
-            f"""This image contains some text. For this task, you need to look at the image carefully and identify all the text in the image. The text in the image is""",
-            f"""There is some text written on the image. Tell me what is the text.""",
-            f"""What is the text written on the image?""",
-            f"""The text written on the image is""",
-            f"""Tell me all the text on the image.""",
+            """This image contains some text. For this task, you need to look at the image carefully and identify all the text in the image. The text in the image is""",
+            """There is some text written on the image. Tell me what is the text.""",
+            """What is the text written on the image?""",
+            """The text written on the image is""",
+            """Tell me all the text on the image.""",
         ]
     elif task == "hateful_content_detection":
         instructs = [

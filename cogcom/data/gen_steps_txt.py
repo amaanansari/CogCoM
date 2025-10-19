@@ -5,23 +5,16 @@
 @Contact :   qj20@mails.tsinghua.edu.cn
 """
 
-import os, sys
+import os
 import re
 import json
 import urllib3
 
 # import jsonlines
-import random
 import argparse
-import pandas as pd
 from tqdm import tqdm
-import numpy as np
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import List, Dict
 import multiprocessing
-import itertools
 import glob
-from functools import partial
 import time
 
 from tools.gpt4 import GPT4PI
@@ -69,7 +62,7 @@ def process_one_line(data, func, shot):
                     rt_steps.append(content)
                 qa["steps"] = rt_steps
             except:
-                print(f"Parsing result failed.")
+                print("Parsing result failed.")
 
             qa["steps_txt"] = result
     return data

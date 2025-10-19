@@ -4,23 +4,15 @@ e.g.,
   CoreObj: (the train, the train parking on the railway)
 """
 
-import os, sys
+import os
 import re
 import json
 import urllib3
 
 # import jsonlines
-import random
-import argparse
-import pandas as pd
 from tqdm import tqdm
-import numpy as np
-from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import List, Dict
 import multiprocessing
-import itertools
 import glob
-from functools import partial
 import time
 
 from utils.template_util import *
@@ -75,7 +67,7 @@ def process_one_line(
                 qa["steps"] = ret_json["steps"]
                 qa["conclusion"] = ret_json["conclusion"]
             except:
-                print(f"Parsing result failed.")
+                print("Parsing result failed.")
     return data
 
 
@@ -94,8 +86,8 @@ def process_multi_lines(lines, save_f, rank=-1):
 
 
 if __name__ == "__main__":
-    data_dir = f"save/processed/TDIUC"
-    save_dir = f"save/steps_absurd"
+    data_dir = "save/processed/TDIUC"
+    save_dir = "save/steps_absurd"
     os.makedirs(save_dir, exist_ok=True)
     # Resume
     finished_lines = {}
@@ -121,7 +113,7 @@ if __name__ == "__main__":
     for file_name in train_files:
         if any([ds in file_name for ds in include]):
             assert ".json" in file_name
-            if not "train.jsonl" in file_name:
+            if "train.jsonl" not in file_name:
                 continue
             with open(file_name, "r") as fin:
                 for line in fin:

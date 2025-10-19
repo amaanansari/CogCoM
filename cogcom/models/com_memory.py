@@ -1,11 +1,7 @@
-import os
-import sys
-import math
-import random
 import torch
 import einops
 
-from sat.model.base_model import BaseModel, BaseMixin, non_conflict
+from sat.model.base_model import BaseMixin, non_conflict
 from sat.transformer_defaults import attention_fn_default
 
 

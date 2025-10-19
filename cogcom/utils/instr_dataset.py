@@ -1,10 +1,8 @@
 import json
-import random
-import torch
 import pickle
 from io import BytesIO
 from PIL import Image
-from grounding_parser import parse_resize, box2txt, boxes2txt, point2txt
+from grounding_parser import parse_resize, boxes2txt, point2txt
 
 IMAGE_PLACEHOLDER = "<image>"
 BOXES_PLACEHOLDER = "<boxes>"

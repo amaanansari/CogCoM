@@ -3,12 +3,12 @@
 Adapted from autoregressive_sampling.py in sat.
 """
 
-import sys, os
+import sys
+import os
 
 sys.path.append(os.path.dirname(__file__))
 import re
-from functools import partial
-from typing import Optional, Tuple, Union, List, Callable, Dict, Any
+from typing import Tuple, List
 import requests
 from PIL import Image
 from io import BytesIO
