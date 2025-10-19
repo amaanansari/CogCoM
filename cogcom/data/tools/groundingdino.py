@@ -19,7 +19,6 @@ from groundingdino.util.utils import clean_state_dict, get_phrases_from_posmap
 from groundingdino.util.vl_utils import create_positive_map_from_span
 
 
-
 def plot_boxes_to_image(image_pil, tgt):
     H, W = tgt["size"]
     boxes = tgt["boxes"]
@@ -85,14 +84,27 @@ def load_model(model_config_path, model_checkpoint_path, cpu_only=False):
     args.device = "cuda" if not cpu_only else "cpu"
     model = build_model(args)
     checkpoint = torch.load(model_checkpoint_path, map_location="cpu")
-    load_res = model.load_state_dict(clean_state_dict(checkpoint["model"]), strict=False)
+    load_res = model.load_state_dict(
+        clean_state_dict(checkpoint["model"]), strict=False
+    )
     print(load_res)
     _ = model.eval()
     return model
 
 
-def get_grounding_output(model, image, caption, box_threshold, text_threshold=None, with_logits=True, cpu_only=False, token_spans=None):
-    assert text_threshold is not None or token_spans is not None, "text_threshould and token_spans should not be None at the same time!"
+def get_grounding_output(
+    model,
+    image,
+    caption,
+    box_threshold,
+    text_threshold=None,
+    with_logits=True,
+    cpu_only=False,
+    token_spans=None,
+):
+    assert text_threshold is not None or token_spans is not None, (
+        "text_threshould and token_spans should not be None at the same time!"
+    )
     caption = caption.lower()
     caption = caption.strip()
     if not caption.endswith("."):
@@ -119,25 +131,28 @@ def get_grounding_output(model, image, caption, box_threshold, text_threshold=No
         # build pred
         pred_phrases = []
         for logit, box in zip(logits_filt, boxes_filt):
-            pred_phrase = get_phrases_from_posmap(logit > text_threshold, tokenized, tokenlizer)
+            pred_phrase = get_phrases_from_posmap(
+                logit > text_threshold, tokenized, tokenlizer
+            )
             if with_logits:
-                pred_phrases.append(pred_phrase + f"({str(logit.max().item())[:4]})")
+                pred_phrases.append(
+                    pred_phrase + f"({str(logit.max().item())[:4]})"
+                )
             else:
                 pred_phrases.append(pred_phrase)
     else:
         # given-phrase mode
         positive_maps = create_positive_map_from_span(
-            model.tokenizer(caption),
-            token_span=token_spans
-        ).to(image.device) # n_phrase, 256
+            model.tokenizer(caption), token_span=token_spans
+        ).to(image.device)  # n_phrase, 256
 
-        logits_for_phrases = positive_maps @ logits.T # n_phrase, nq
+        logits_for_phrases = positive_maps @ logits.T  # n_phrase, nq
         all_logits = []
         all_phrases = []
         all_boxes = []
-        for (token_span, logit_phr) in zip(token_spans, logits_for_phrases):
+        for token_span, logit_phr in zip(token_spans, logits_for_phrases):
             # get phrase
-            phrase = ' '.join([caption[_s:_e] for (_s, _e) in token_span])
+            phrase = " ".join([caption[_s:_e] for (_s, _e) in token_span])
             # get mask
             filt_mask = logit_phr > box_threshold
             # filt box
@@ -146,28 +161,59 @@ def get_grounding_output(model, image, caption, box_threshold, text_threshold=No
             all_logits.append(logit_phr[filt_mask])
             if with_logits:
                 logit_phr_num = logit_phr[filt_mask]
-                all_phrases.extend([phrase + f"({str(logit.item())[:4]})" for logit in logit_phr_num])
+                all_phrases.extend(
+                    [
+                        phrase + f"({str(logit.item())[:4]})"
+                        for logit in logit_phr_num
+                    ]
+                )
             else:
                 all_phrases.extend([phrase for _ in range(len(filt_mask))])
         boxes_filt = torch.cat(all_boxes, dim=0).cpu()
         pred_phrases = all_phrases
 
-
     return boxes_filt, pred_phrases
 
+
 import nltk
+
+
 def find_noun_phrases(caption: str) -> List[str]:
     if not caption:
         return [caption]
 
     def remove_punctuation(text):
-        punct = ['|', ':', ';', '@', '(', ')', '[', ']', '{', '}', '^',
-             '\'', '\"', '’', '`', '?', '$', '%', '#', '!', '&', '*', '+', ',', '.'
-             ]
+        punct = [
+            "|",
+            ":",
+            ";",
+            "@",
+            "(",
+            ")",
+            "[",
+            "]",
+            "{",
+            "}",
+            "^",
+            "'",
+            '"',
+            "’",
+            "`",
+            "?",
+            "$",
+            "%",
+            "#",
+            "!",
+            "&",
+            "*",
+            "+",
+            ",",
+            ".",
+        ]
         for p in punct:
-            text = text.replace(p, '')
+            text = text.replace(p, "")
         return text.strip()
-    
+
     caption = caption.lower()
     tokens = nltk.word_tokenize(caption)
     pos_tags = nltk.pos_tag(tokens)
@@ -178,33 +224,37 @@ def find_noun_phrases(caption: str) -> List[str]:
 
     noun_phrases = list()
     for subtree in result.subtrees():
-        if subtree.label() == 'NP':
-            noun_phrases.append(' '.join(t[0] for t in subtree.leaves()))
+        if subtree.label() == "NP":
+            noun_phrases.append(" ".join(t[0] for t in subtree.leaves()))
 
     noun_phrases = [remove_punctuation(phrase) for phrase in noun_phrases]
-    noun_phrases = [phrase for phrase in noun_phrases if phrase != '']
+    noun_phrases = [phrase for phrase in noun_phrases if phrase != ""]
 
-    if len(noun_phrases) ==0: # avoid exception
+    if len(noun_phrases) == 0:  # avoid exception
         noun_phrases = [caption]
 
     return noun_phrases
+
 
 def restore_boxes(boxes, img_size, onbox=None):
     """restore ration-based coordinates to the pixel-based ones"""
     size = img_size
     if onbox is not None:
-        size = (onbox[2]-onbox[0], onbox[3]-onbox[1])
+        size = (onbox[2] - onbox[0], onbox[3] - onbox[1])
     rt_boxes = []
     for box in boxes:
-        box[0] -= box[2]/2
-        box[1] -= box[3]/2
+        box[0] -= box[2] / 2
+        box[1] -= box[3] / 2
         box[0] *= size[0]
         box[1] *= size[1]
-        box[2] = box[0] + box[2]*size[0]
-        box[3] = box[1] + box[3]*size[1]
+        box[2] = box[0] + box[2] * size[0]
+        box[3] = box[1] + box[3] * size[1]
         box = [round(b) for b in box]
         if onbox is not None:
-            box = [b+ob for b,ob in zip(box, [onbox[0], onbox[1], onbox[0], onbox[1]])]
+            box = [
+                b + ob
+                for b, ob in zip(box, [onbox[0], onbox[1], onbox[0], onbox[1]])
+            ]
         rt_boxes.append(box)
     return rt_boxes
 
@@ -215,23 +265,26 @@ def get_positive_spans(caption: str, phrases: List[str]):
         ph_s = ph_e = caption.find(phr)
         ph_spans = []
         for i, ch in enumerate(phr):
-            if ch == ' ' or i==len(phr)-1:
-                ph_e = ph_e+1 if i==len(phr)-1 else ph_e
-                if ph_e!=ph_s:
+            if ch == " " or i == len(phr) - 1:
+                ph_e = ph_e + 1 if i == len(phr) - 1 else ph_e
+                if ph_e != ph_s:
                     ph_spans.append([ph_s, ph_e])
-                ph_s = ph_e = ph_e+1
+                ph_s = ph_e = ph_e + 1
             else:
                 ph_e += 1
         positive_spans.append(ph_spans)
     return positive_spans
 
 
-
-
-
-
 class GroundingDINO:
-    def __init__(self,config_file, checkpoint_path, box_threshold=0.3, text_threshold=0.25,cpu_only=False):
+    def __init__(
+        self,
+        config_file,
+        checkpoint_path,
+        box_threshold=0.3,
+        text_threshold=0.25,
+        cpu_only=False,
+    ):
         self.cpu_only = cpu_only
         self.box_threshold = box_threshold
         self.text_threshold = text_threshold
@@ -244,11 +297,16 @@ class GroundingDINO:
 
         # run model
         boxes_filt, pred_phrases = get_grounding_output(
-            self.model, image, caption, self.box_threshold, self.text_threshold, cpu_only=self.cpu_only, token_spans=token_spans
+            self.model,
+            image,
+            caption,
+            self.box_threshold,
+            self.text_threshold,
+            cpu_only=self.cpu_only,
+            token_spans=token_spans,
         )
-            
+
         boxes = restore_boxes(boxes_filt.tolist(), ori_size, onbox)
         # ex['img_size'] = ori_size
         # qa['steps_returns'][ret] = boxes
         return boxes
-
