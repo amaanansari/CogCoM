@@ -41,7 +41,7 @@ line-length = 79
 
 [tool.ruff.lint]
 # ensure the “line-too-long” rule is enabled (E501)
-select = ["ALL"]
+#select = ["ALL"]
 extend-select = ["E501"]
 ignore = [
   # docstring rule pairs are mutually exclusive

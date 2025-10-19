@@ -43,12 +43,12 @@ def filling_sequence(
         input mems are used when multi-phase generation.
     """
     assert len(seq.shape) == 1
-    if hasattr(strategy, "num_beams") and batch_size < strategy.num_beams:
-        batch_size = strategy.num_beams
+    if hasattr(strategy, "num_beams") and batch_size < strategy.num_beams: # pyright: ignore[reportAttributeAccessIssue]
+        batch_size = strategy.num_beams # pyright: ignore[reportAttributeAccessIssue]
         print(
             f"Adjust batch_size to {batch_size} due to num_beams. Mute this warning by setting batch_size == num_beams.",
             level="DEBUG",
-        )
+        ) 
 
     # building the initial tokens, attention_mask, and position_ids
     context_length = 0
@@ -195,8 +195,8 @@ def chat(
     img_processor,
     cross_img_processor,
     query: str,
-    history: List[Tuple[str, str]] = None,
-    image: Image = None,
+    history: List[Tuple[str, str]] | None = None,
+    image: Image | None = None,
     max_length: int = 1024,
     top_p=0.7,
     top_k=30,

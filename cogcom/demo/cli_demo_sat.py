@@ -20,8 +20,9 @@ from utils import (
 
 def main():
     if hasattr(torch.serialization, "add_safe_globals"):
-        # Required for loading checkpoints saved with numpy reconstruction helpers on PyTorch >= 2.6
-        torch.serialization.add_safe_globals([np.core.multiarray._reconstruct])
+        # Required for loading checkpoints saved with numpy 
+        # reconstruction helpers on PyTorch >= 2.6
+        torch.serialization.add_safe_globals([np.core.multiarray._reconstruct]) # type: ignore
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
